@@ -450,3 +450,5 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 build_out/
+Models/
+Plugins/

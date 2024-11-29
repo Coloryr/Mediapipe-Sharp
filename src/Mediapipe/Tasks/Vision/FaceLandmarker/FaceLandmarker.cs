@@ -30,7 +30,7 @@ public sealed class FaceLandmarker : Core.BaseVisionTaskApi
 
     private FaceLandmarker(
       CalculatorGraphConfig graphConfig,
-      Core.RunningMode runningMode,
+      Core.VisionRunningMode runningMode,
       GpuResources? gpuResources,
       List<FaceGeometry.Proto.FaceGeometry>? faceGeometriesForRead,
       Tasks.Core.TaskRunner.PacketsCallback? packetCallback) : base(graphConfig, runningMode, gpuResources, packetCallback)
@@ -54,8 +54,8 @@ public sealed class FaceLandmarker : Core.BaseVisionTaskApi
     /// </returns>
     public static FaceLandmarker CreateFromModelPath(string modelPath, GpuResources? gpuResources = null)
     {
-        var baseOptions = new Tasks.Core.BaseOptions(modelAssetPath: modelPath);
-        var options = new FaceLandmarkerOptions(baseOptions, runningMode: Core.RunningMode.IMAGE);
+        var baseOptions = new Tasks.Core.CoreBaseOptions(modelAssetPath: modelPath);
+        var options = new FaceLandmarkerOptions(baseOptions, runningMode: Core.VisionRunningMode.IMAGE);
         return CreateFromOptions(options, gpuResources);
     }
 
@@ -96,7 +96,7 @@ public sealed class FaceLandmarker : Core.BaseVisionTaskApi
 
         var faceGeometriesForRead = options.OutputFaceTransformationMatrixes ? new List<FaceGeometry.Proto.FaceGeometry>(options.NumFaces) : null;
         return new FaceLandmarker(
-          taskInfo.GenerateGraphConfig(options.RunningMode == Core.RunningMode.LIVE_STREAM),
+          taskInfo.GenerateGraphConfig(options.RunningMode == Core.VisionRunningMode.LIVE_STREAM),
           options.RunningMode,
           gpuResources,
           faceGeometriesForRead,

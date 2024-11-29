@@ -1,6 +1,6 @@
 namespace Mediapipe.Tasks.Vision.Core;
 
-public enum RunningMode
+public enum VisionRunningMode
 {
     IMAGE,
     VIDEO,

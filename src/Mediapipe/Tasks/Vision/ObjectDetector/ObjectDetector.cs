@@ -24,7 +24,7 @@ public sealed class ObjectDetector : Core.BaseVisionTaskApi
 
     private ObjectDetector(
       CalculatorGraphConfig graphConfig,
-      Core.RunningMode runningMode,
+      Core.VisionRunningMode runningMode,
       GpuResources? gpuResources,
       Tasks.Core.TaskRunner.PacketsCallback? packetCallback) : base(graphConfig, runningMode, gpuResources, packetCallback)
     {
@@ -47,8 +47,8 @@ public sealed class ObjectDetector : Core.BaseVisionTaskApi
     /// </returns>
     public static ObjectDetector CreateFromModelPath(string modelPath, GpuResources? gpuResources = null)
     {
-        var baseOptions = new Tasks.Core.BaseOptions(modelAssetPath: modelPath);
-        var options = new ObjectDetectorOptions(baseOptions, runningMode: Core.RunningMode.IMAGE);
+        var baseOptions = new Tasks.Core.CoreBaseOptions(modelAssetPath: modelPath);
+        var options = new ObjectDetectorOptions(baseOptions, runningMode: Core.VisionRunningMode.IMAGE);
         return CreateFromOptions(options, gpuResources);
     }
 
@@ -78,7 +78,7 @@ public sealed class ObjectDetector : Core.BaseVisionTaskApi
           taskOptions: options);
 
         return new ObjectDetector(
-          taskInfo.GenerateGraphConfig(options.RunningMode == Core.RunningMode.LIVE_STREAM),
+          taskInfo.GenerateGraphConfig(options.RunningMode == Core.VisionRunningMode.LIVE_STREAM),
           options.RunningMode,
           gpuResources,
           BuildPacketsCallback(options));

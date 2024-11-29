@@ -6,8 +6,8 @@ namespace Mediapipe.Tasks.Vision.ObjectDetector;
 ///   Options for the object detector task.
 /// </summary>
 public sealed class ObjectDetectorOptions(
-    Tasks.Core.BaseOptions baseOptions,
-    Core.RunningMode runningMode = Core.RunningMode.IMAGE,
+    Tasks.Core.CoreBaseOptions baseOptions,
+    Core.VisionRunningMode runningMode = Core.VisionRunningMode.IMAGE,
     string? displayNamesLocale = null,
     int? maxResults = null,
     float? scoreThreshold = null,
@@ -37,7 +37,7 @@ ObjectDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     /// <summary>
     ///   Base options for the object detector task.
     /// </summary>
-    public Tasks.Core.BaseOptions BaseOptions { get; } = baseOptions;
+    public Tasks.Core.CoreBaseOptions BaseOptions { get; } = baseOptions;
     /// <summary>
     ///   The running mode of the task. Default to the image mode.
     ///   Object detector task has three running modes:
@@ -55,7 +55,7 @@ ObjectDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     ///     </item>
     ///   </list>
     /// </summary>
-    public Core.RunningMode RunningMode { get; } = runningMode;
+    public Core.VisionRunningMode RunningMode { get; } = runningMode;
 
     /// <summary>
     ///   The locale to use for display names specified through the TFLite Model Metadata.
@@ -90,7 +90,7 @@ ObjectDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     internal Proto.ObjectDetectorOptions ToProto()
     {
         var baseOptionsProto = BaseOptions.ToProto();
-        baseOptionsProto.UseStreamMode = RunningMode != Core.RunningMode.IMAGE;
+        baseOptionsProto.UseStreamMode = RunningMode != Core.VisionRunningMode.IMAGE;
 
         var options = new Proto.ObjectDetectorOptions
         {

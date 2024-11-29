@@ -1,6 +1,6 @@
 namespace Mediapipe.Tasks.Core;
 
-public sealed class BaseOptions(BaseOptions.Delegate delegateCase = BaseOptions.Delegate.CPU, string? modelAssetPath = null, byte[]? modelAssetBuffer = null)
+public sealed class CoreBaseOptions(CoreBaseOptions.Delegate delegateCase = CoreBaseOptions.Delegate.CPU, string? modelAssetPath = null, byte[]? modelAssetBuffer = null)
 {
     public enum Delegate
     {

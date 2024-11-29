@@ -6,8 +6,8 @@ namespace Mediapipe.Tasks.Vision.HandLandmarker;
 ///   Options for the hand landmarker task.
 /// </summary>
 public sealed class HandLandmarkerOptions(
-  Tasks.Core.BaseOptions baseOptions,
-  Core.RunningMode runningMode = Core.RunningMode.IMAGE,
+  Tasks.Core.CoreBaseOptions baseOptions,
+  Core.VisionRunningMode runningMode = Core.VisionRunningMode.IMAGE,
   int numHands = 1,
   float minHandDetectionConfidence = 0.5f,
   float minHandPresenceConfidence = 0.5f,
@@ -28,7 +28,7 @@ HandLandmarkerOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     /// <summary>
     ///   Base options for the hand landmarker task.
     /// </summary>
-    public Tasks.Core.BaseOptions BaseOptions { get; } = baseOptions;
+    public Tasks.Core.CoreBaseOptions BaseOptions { get; } = baseOptions;
     /// <summary>
     ///   The running mode of the task. Default to the image mode.
     ///   HandLandmarker has three running modes:
@@ -47,7 +47,7 @@ HandLandmarkerOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     ///     </item>
     ///   </list>
     /// </summary>
-    public Core.RunningMode RunningMode { get; } = runningMode;
+    public Core.VisionRunningMode RunningMode { get; } = runningMode;
     /// <summary>
     ///   The maximum number of hands can be detected by the hand landmarker.
     /// </summary>
@@ -73,7 +73,7 @@ HandLandmarkerOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     internal Proto.HandLandmarkerGraphOptions ToProto()
     {
         var baseOptionsProto = BaseOptions.ToProto();
-        baseOptionsProto.UseStreamMode = RunningMode != Core.RunningMode.IMAGE;
+        baseOptionsProto.UseStreamMode = RunningMode != Core.VisionRunningMode.IMAGE;
 
         return new Proto.HandLandmarkerGraphOptions
         {

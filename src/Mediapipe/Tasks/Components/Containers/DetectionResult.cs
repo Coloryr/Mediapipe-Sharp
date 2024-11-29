@@ -6,7 +6,7 @@ namespace Mediapipe.Tasks.Components.Containers;
 /// <summary>
 ///   Represents one detected object in the object detector's results.
 /// </summary>
-public readonly struct Detection
+public readonly struct DetectionResultItem
 {
     public const int DefaultCategoryIndex = -1;
 
@@ -27,22 +27,22 @@ public readonly struct Detection
     /// </summary>
     public readonly List<NormalizedKeypoint>? Keypoints;
 
-    internal Detection(List<Category> categories, Rect boundingBox, List<NormalizedKeypoint>? keypoints)
+    internal DetectionResultItem(List<Category> categories, Rect boundingBox, List<NormalizedKeypoint>? keypoints)
     {
         Categories = categories;
         BoundingBox = boundingBox;
         Keypoints = keypoints;
     }
 
-    public static Detection CreateFrom(Mediapipe.Detection proto)
+    public static DetectionResultItem CreateFrom(Mediapipe.Detection proto)
     {
-        var result = default(Detection);
+        var result = default(DetectionResultItem);
 
         Copy(proto, ref result);
         return result;
     }
 
-    public static void Copy(Mediapipe.Detection proto, ref Detection destination)
+    public static void Copy(Mediapipe.Detection proto, ref DetectionResultItem destination)
     {
         var categories = destination.Categories ?? new List<Category>(proto.Score.Count);
         categories.Clear();
@@ -65,7 +65,7 @@ public readonly struct Detection
 
         if (proto.LocationData?.RelativeKeypoints.Count == 0)
         {
-            destination = new Detection(categories, boundingBox, null);
+            destination = new DetectionResultItem(categories, boundingBox, null);
             return;
         }
 
@@ -82,10 +82,10 @@ public readonly struct Detection
             ));
         }
 
-        destination = new Detection(categories, boundingBox, keypoints);
+        destination = new DetectionResultItem(categories, boundingBox, keypoints);
     }
 
-    internal static void Copy(in NativeDetection source, ref Detection destination)
+    internal static void Copy(in NativeDetection source, ref DetectionResultItem destination)
     {
         var categories = destination.Categories ?? new List<Category>((int)source.categoriesCount);
         categories.Clear();
@@ -103,7 +103,7 @@ public readonly struct Detection
             keypoints.Add(new NormalizedKeypoint(nativeKeypoint));
         }
 
-        destination = new Detection(categories, boundingBox, keypoints);
+        destination = new DetectionResultItem(categories, boundingBox, keypoints);
     }
 
     public override string ToString()
@@ -116,16 +116,16 @@ public readonly struct Detection
 public readonly struct DetectionResult
 {
     /// <summary>
-    ///   A list of <see cref="Detection" /> objects.
+    ///   A list of <see cref="DetectionResultItem" /> objects.
     /// </summary>
-    public readonly List<Detection> Detections;
+    public readonly List<DetectionResultItem> Detections;
 
-    internal DetectionResult(List<Detection> detections)
+    internal DetectionResult(List<DetectionResultItem> detections)
     {
         Detections = detections;
     }
 
-    public static DetectionResult Alloc(int capacity) => new(new List<Detection>(capacity));
+    public static DetectionResult Alloc(int capacity) => new(new List<DetectionResultItem>(capacity));
 
     public static DetectionResult CreateFrom(List<Mediapipe.Detection> detectionsProto)
     {
@@ -137,13 +137,13 @@ public readonly struct DetectionResult
 
     public static void Copy(List<Mediapipe.Detection> source, ref DetectionResult destination)
     {
-        var detections = destination.Detections ?? new List<Detection>(source.Count);
+        var detections = destination.Detections ?? new List<DetectionResultItem>(source.Count);
         detections.ResizeTo(source.Count);
 
         for (var i = 0; i < source.Count; i++)
         {
             var detection = detections[i];
-            Detection.Copy(source[i], ref detection);
+            DetectionResultItem.Copy(source[i], ref detection);
             detections[i] = detection;
         }
 
@@ -152,14 +152,14 @@ public readonly struct DetectionResult
 
     internal static void Copy(NativeDetectionResult source, ref DetectionResult destination)
     {
-        var detections = destination.Detections ?? new List<Detection>((int)source.detectionsCount);
+        var detections = destination.Detections ?? new List<DetectionResultItem>((int)source.detectionsCount);
         detections.ResizeTo((int)source.detectionsCount);
 
         var i = 0;
         foreach (var nativeDetection in source.AsReadOnlySpan())
         {
             var detection = detections[i];
-            Detection.Copy(nativeDetection, ref detection);
+            DetectionResultItem.Copy(nativeDetection, ref detection);
             detections[i++] = detection;
         }
 

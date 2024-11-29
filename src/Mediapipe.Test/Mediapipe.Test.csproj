@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Protobuf\Modules\FaceGeometry\" />
-    <Folder Include="Protobuf\Modules\Objectron\" />
+	<PackageReference Include="StbImageSharp" Version="2.30.15" />
+    <PackageReference Include="StbImageWriteSharp" Version="1.16.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.29.0" />
+    <ProjectReference Include="..\Mediapipe\Mediapipe.csproj" />
   </ItemGroup>
 
 </Project>

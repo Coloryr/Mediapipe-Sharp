@@ -6,8 +6,8 @@ namespace Mediapipe.Tasks.Vision.FaceLandmarker;
 ///   Options for the face landmarker task.
 /// </summary>
 public sealed class FaceLandmarkerOptions(
-  Tasks.Core.BaseOptions baseOptions,
-  Core.RunningMode runningMode = Core.RunningMode.IMAGE,
+  Tasks.Core.CoreBaseOptions baseOptions,
+  Core.VisionRunningMode runningMode = Core.VisionRunningMode.IMAGE,
   int numFaces = 1,
   float minFaceDetectionConfidence = 0.5f,
   float minFacePresenceConfidence = 0.5f,
@@ -30,7 +30,7 @@ FaceLandmarkerOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     /// <summary>
     ///   Base options for the hand landmarker task.
     /// </summary>
-    public Tasks.Core.BaseOptions BaseOptions { get; } = baseOptions;
+    public Tasks.Core.CoreBaseOptions BaseOptions { get; } = baseOptions;
     /// <summary>
     ///   The running mode of the task. Default to the image mode.
     ///   FaceLandmarker has three running modes:
@@ -49,7 +49,7 @@ FaceLandmarkerOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     ///     </item>
     ///   </list>
     /// </summary>
-    public Core.RunningMode RunningMode { get; } = runningMode;
+    public Core.VisionRunningMode RunningMode { get; } = runningMode;
     /// <summary>
     ///   The maximum number of faces that can be detected by the face detector.
     /// </summary>
@@ -86,7 +86,7 @@ FaceLandmarkerOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.IT
     internal Proto.FaceLandmarkerGraphOptions ToProto()
     {
         var baseOptionsProto = BaseOptions.ToProto();
-        baseOptionsProto.UseStreamMode = RunningMode != Core.RunningMode.IMAGE;
+        baseOptionsProto.UseStreamMode = RunningMode != Core.VisionRunningMode.IMAGE;
 
         return new Proto.FaceLandmarkerGraphOptions
         {

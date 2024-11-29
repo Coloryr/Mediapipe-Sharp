@@ -1,4 +1,6 @@
 using Mediapipe.Framework.Formats;
+using Mediapipe.Tasks.Core;
+using Mediapipe.Tasks.Vision.Core;
 
 namespace Mediapipe.Tasks.Vision.FaceDetector;
 
@@ -6,12 +8,12 @@ namespace Mediapipe.Tasks.Vision.FaceDetector;
 ///   Options for the face detector task.
 /// </summary>
 public sealed class FaceDetectorOptions(
-  Tasks.Core.BaseOptions baseOptions,
-  Core.RunningMode runningMode = Core.RunningMode.IMAGE,
-  float minDetectionConfidence = 0.5f,
-  float minSuppressionThreshold = 0.3f,
-  int numFaces = 3,
-FaceDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.ITaskOptions
+    CoreBaseOptions baseOptions,
+    VisionRunningMode runningMode = VisionRunningMode.IMAGE,
+    float minDetectionConfidence = 0.5f,
+    float minSuppressionThreshold = 0.3f,
+    int numFaces = 3,
+    FaceDetectorOptions.ResultCallbackFunc? resultCallback = null) : ITaskOptions
 {
     /// <remarks>
     ///   Some field of <paramref name="detectionResult"/> can be reused to reduce GC.Alloc.
@@ -35,7 +37,7 @@ FaceDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.ITas
     /// <summary>
     ///   Base options for the face detector task.
     /// </summary>
-    public Tasks.Core.BaseOptions BaseOptions { get; } = baseOptions;
+    public CoreBaseOptions BaseOptions { get; } = baseOptions;
     /// <summary>
     ///   The running mode of the task. Default to the image mode.
     ///   Face detector task has three running modes:
@@ -53,7 +55,7 @@ FaceDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.ITas
     ///     </item>
     ///   </list>
     /// </summary>
-    public Core.RunningMode RunningMode { get; } = runningMode;
+    public VisionRunningMode RunningMode { get; } = runningMode;
     /// <summary>
     ///   The minimum confidence score for the face detection to be considered successful.
     /// </summary>
@@ -75,7 +77,7 @@ FaceDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.ITas
     internal Proto.FaceDetectorGraphOptions ToProto()
     {
         var baseOptionsProto = BaseOptions.ToProto();
-        baseOptionsProto.UseStreamMode = RunningMode != Core.RunningMode.IMAGE;
+        baseOptionsProto.UseStreamMode = RunningMode != Core.VisionRunningMode.IMAGE;
 
         return new Proto.FaceDetectorGraphOptions
         {
@@ -86,7 +88,7 @@ FaceDetectorOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.ITas
         };
     }
 
-    CalculatorOptions Tasks.Core.ITaskOptions.ToCalculatorOptions()
+    CalculatorOptions ITaskOptions.ToCalculatorOptions()
     {
         var options = new CalculatorOptions();
         options.SetExtension(Proto.FaceDetectorGraphOptions.Extensions.Ext, ToProto());

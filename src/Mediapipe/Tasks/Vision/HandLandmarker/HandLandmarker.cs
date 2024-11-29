@@ -27,7 +27,7 @@ public sealed class HandLandmarker : Core.BaseVisionTaskApi
 
     private HandLandmarker(
       CalculatorGraphConfig graphConfig,
-      Core.RunningMode runningMode,
+      Core.VisionRunningMode runningMode,
       GpuResources? gpuResources,
       Tasks.Core.TaskRunner.PacketsCallback? packetCallback) : base(graphConfig, runningMode, gpuResources, packetCallback)
     {
@@ -50,8 +50,8 @@ public sealed class HandLandmarker : Core.BaseVisionTaskApi
     /// </returns>
     public static HandLandmarker CreateFromModelPath(string modelPath, GpuResources? gpuResources = null)
     {
-        var baseOptions = new Tasks.Core.BaseOptions(modelAssetPath: modelPath);
-        var options = new HandLandmarkerOptions(baseOptions, runningMode: Core.RunningMode.IMAGE);
+        var baseOptions = new Tasks.Core.CoreBaseOptions(modelAssetPath: modelPath);
+        var options = new HandLandmarkerOptions(baseOptions, runningMode: Core.VisionRunningMode.IMAGE);
         return CreateFromOptions(options, gpuResources);
     }
 
@@ -83,7 +83,7 @@ public sealed class HandLandmarker : Core.BaseVisionTaskApi
           taskOptions: options);
 
         return new HandLandmarker(
-          taskInfo.GenerateGraphConfig(options.RunningMode == Core.RunningMode.LIVE_STREAM),
+          taskInfo.GenerateGraphConfig(options.RunningMode == Core.VisionRunningMode.LIVE_STREAM),
           options.RunningMode,
           gpuResources,
           BuildPacketsCallback(options));

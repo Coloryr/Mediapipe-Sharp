@@ -10,7 +10,7 @@ namespace Mediapipe.Tasks.Vision.Core;
 public class BaseVisionTaskApi : IDisposable
 {
     private readonly Tasks.Core.TaskRunner _taskRunner;
-    public RunningMode RunningMode { get; }
+    public VisionRunningMode RunningMode { get; }
     private bool _isClosed = false;
 
     /// <summary>
@@ -21,7 +21,7 @@ public class BaseVisionTaskApi : IDisposable
     /// </exception>
     protected BaseVisionTaskApi(
       CalculatorGraphConfig graphConfig,
-      RunningMode runningMode,
+      VisionRunningMode runningMode,
       Tasks.Core.TaskRunner.PacketsCallback packetsCallback) : this(graphConfig, runningMode, null, packetsCallback) { }
 
     /// <summary>
@@ -32,11 +32,11 @@ public class BaseVisionTaskApi : IDisposable
     /// </exception>
     protected BaseVisionTaskApi(
       CalculatorGraphConfig graphConfig,
-      RunningMode runningMode,
+      VisionRunningMode runningMode,
       GpuResources? gpuResources,
       Tasks.Core.TaskRunner.PacketsCallback? packetsCallback)
     {
-        if (runningMode == RunningMode.LIVE_STREAM)
+        if (runningMode == VisionRunningMode.LIVE_STREAM)
         {
             if (packetsCallback == null)
             {
@@ -70,7 +70,7 @@ public class BaseVisionTaskApi : IDisposable
     /// </exception>
     protected PacketMap ProcessImageData(PacketMap inputs)
     {
-        if (RunningMode != RunningMode.IMAGE)
+        if (RunningMode != VisionRunningMode.IMAGE)
         {
             throw new InvalidOperationException($"Task is not initialized with the image mode. Current running mode: {RunningMode}");
         }
@@ -86,7 +86,7 @@ public class BaseVisionTaskApi : IDisposable
     /// </exception>
     protected PacketMap ProcessVideoData(PacketMap inputs)
     {
-        if (RunningMode != RunningMode.VIDEO)
+        if (RunningMode != VisionRunningMode.VIDEO)
         {
             throw new InvalidOperationException($"Task is not initialized with the video mode. Current running mode: {RunningMode}");
         }
@@ -102,7 +102,7 @@ public class BaseVisionTaskApi : IDisposable
     /// </exception>
     protected void SendLiveStreamData(PacketMap inputs)
     {
-        if (RunningMode != RunningMode.LIVE_STREAM)
+        if (RunningMode != VisionRunningMode.LIVE_STREAM)
         {
             throw new InvalidOperationException($"Task is not initialized with the live stream mode. Current running mode: {RunningMode}");
         }

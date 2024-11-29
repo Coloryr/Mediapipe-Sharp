@@ -6,7 +6,7 @@ namespace Mediapipe.Tasks.Audio.AudioClassifier;
 ///   Options for the audio classifier task.
 /// </summary>
 public sealed class AudioClassifierOptions(
-  Tasks.Core.BaseOptions baseOptions,
+  Tasks.Core.CoreBaseOptions baseOptions,
   Core.RunningMode runningMode = Core.RunningMode.AUDIO_CLIPS,
   string? displayNamesLocale = null,
   int? maxResults = null,
@@ -30,7 +30,7 @@ AudioClassifierOptions.ResultCallbackFunc? resultCallback = null) : Tasks.Core.I
     /// <summary>
     ///   Base options for the audio classifier task.
     /// </summary>
-    public Tasks.Core.BaseOptions BaseOptions { get; init; } = baseOptions;
+    public Tasks.Core.CoreBaseOptions BaseOptions { get; init; } = baseOptions;
     /// <summary>
     ///   The running mode of the task. Default to the audio clips mode.
     ///   Audio classifier task has two running modes:

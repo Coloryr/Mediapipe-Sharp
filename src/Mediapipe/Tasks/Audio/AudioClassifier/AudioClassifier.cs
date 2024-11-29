@@ -42,7 +42,7 @@ public sealed class AudioClassifier : Core.BaseAudioTaskApi
     /// </returns>
     public static AudioClassifier CreateFromModelPath(string modelPath)
     {
-        var baseOptions = new Tasks.Core.BaseOptions(modelAssetPath: modelPath);
+        var baseOptions = new Tasks.Core.CoreBaseOptions(modelAssetPath: modelPath);
         var options = new AudioClassifierOptions(baseOptions, runningMode: Core.RunningMode.AUDIO_CLIPS);
         return CreateFromOptions(options);
     }

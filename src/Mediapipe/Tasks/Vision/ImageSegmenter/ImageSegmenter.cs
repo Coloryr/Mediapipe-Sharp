@@ -29,7 +29,7 @@ public sealed class ImageSegmenter : Core.BaseVisionTaskApi
 
     private ImageSegmenter(
       CalculatorGraphConfig graphConfig,
-      Core.RunningMode runningMode,
+      Core.VisionRunningMode runningMode,
       GpuResources? gpuResources,
       Tasks.Core.TaskRunner.PacketsCallback? packetCallback) : base(graphConfig, runningMode, gpuResources, packetCallback)
     {
@@ -52,8 +52,8 @@ public sealed class ImageSegmenter : Core.BaseVisionTaskApi
     /// </returns>
     public static ImageSegmenter CreateFromModelPath(string modelPath, GpuResources? gpuResources = null)
     {
-        var baseOptions = new Tasks.Core.BaseOptions(modelAssetPath: modelPath);
-        var options = new ImageSegmenterOptions(baseOptions, runningMode: Core.RunningMode.IMAGE);
+        var baseOptions = new Tasks.Core.CoreBaseOptions(modelAssetPath: modelPath);
+        var options = new ImageSegmenterOptions(baseOptions, runningMode: Core.VisionRunningMode.IMAGE);
         return CreateFromOptions(options, gpuResources);
     }
 
@@ -93,7 +93,7 @@ public sealed class ImageSegmenter : Core.BaseVisionTaskApi
           taskOptions: options);
 
         return new ImageSegmenter(
-          taskInfo.GenerateGraphConfig(options.RunningMode == Core.RunningMode.LIVE_STREAM),
+          taskInfo.GenerateGraphConfig(options.RunningMode == Core.VisionRunningMode.LIVE_STREAM),
           options.RunningMode,
           gpuResources,
           BuildPacketsCallback(options));
